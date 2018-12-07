@@ -1,0 +1,38 @@
+version: '2'
+services:
+  mysql:
+    image: mysql
+    container_name: pwcho-76553
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=mydb
+      - MYSQL_USER=apalyz
+      - MYSQL_PASSWORD=password
+  networks:
+   Bridge-Zadanie-1:
+    ipv4_address: 10.0.10.3
+
+  java:
+    image: agpalyz/pwcho_1
+    container_name: container
+    depends_on:
+      - mysql
+    links:
+      - "mysql:database"
+    networks:
+      - Bridge-Zadanie-1
+    stdin_open: true
+    tty: true
+
+volumes:
+  mysql:	
+	
+networks:
+  Bridge-Zadanie-1:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.10.0/24
+        - gateway: 10.0.10.1
